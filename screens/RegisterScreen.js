@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar'
 import React, { useLayoutEffect, useState } from 'react'
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import { Button, Input, Text } from "react-native-elements"
-import { auth } from '../firebase'
+
 
 const RegisterScreen = ({ navigation }) => {
 
@@ -19,14 +19,7 @@ const RegisterScreen = ({ navigation }) => {
     }, [navigation])
 
     const register = () => {
-        auth
-            .createUserWithEmailAndPassword(email, password)
-            .then(authUser => {
-                authUser.user.update({
-                    displayName: name,
-                    photoURL: imageUrl || '../images/Men-Profile-Image-PNG.png'
-                })
-            }).catch(error => alert(error.message))
+       
     }
 
     return (

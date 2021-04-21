@@ -1,13 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Image, KeyboardAvoidingView } from 'react-native'
 import { Button, Input } from "react-native-elements"
 import { StatusBar } from 'expo-status-bar'
+import { auth } from '../firebase'
 
 const LoginScreen = ({ navigation }) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    // When app starts
+    useEffect(() => {
+        // If user is authenticated then move them to home screen
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            console.log(authUser)
+            if(authUser) {
+                navigation.replace('Home') //Replace replaces the screen and doesn't give the user the option to swipe back like navigate
+            }
+        })
+
+        // Allows us to unsubscribe if the component remounts
+        return unsubscribe
+    }, [])
+
 
     const signIn = () => {
 

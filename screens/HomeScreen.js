@@ -1,10 +1,18 @@
-import React from 'react'
-import { StyleSheet, Text, SafeAreaView } from 'react-native'
+import React, { useLayoutEffect } from 'react'
+import { StyleSheet, Text, SafeAreaView, ScrollView } from 'react-native'
+import CustomListItem from '../components/CustomListItem'
 
 const HomeScreen = () => {
+
+    useLayoutEffect(() => {
+
+    }, [])
+
     return (
         <SafeAreaView>
-            <Text>This is HomeScreen</Text>
+            <ScrollView>
+                <CustomListItem />
+            </ScrollView>
         </SafeAreaView>
     )
 }

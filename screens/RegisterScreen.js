@@ -12,8 +12,9 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setPassword] = useState('')
     const [imageUrl, setImageUrl] = useState('')
 
-    // Happens before the screen is Painted
+    // Happens before the screen is Painted (Loaded)
     useLayoutEffect(() => {
+        // Setting the header options
         navigation.setOptions({
             headerBackTitle: 'Login',
         })

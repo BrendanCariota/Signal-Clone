@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from 'react-native'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
@@ -8,11 +8,27 @@ import { auth, db } from '../firebase'
 
 const HomeScreen = ({ navigation }) => {
 
+    const [chats, setChats] = useState([])
+
     const signOutUser = () => {
         auth.signOut().then(() => {
             navigation.replace('Login')
         })
     }
+
+    // Pulling in users chats from database
+    useEffect(()=> {
+        // onSnapshot gives a realtime look at that collection in our database
+        const unsubscribe = db.collection('chats').onSnapshot(snapshot => (
+            setChats(snapshot.docs.map(doc=> ({
+                id: doc.id,
+                data: doc.data(),
+            })))
+        ))
+
+        // Cleans up our function
+        return unsubscribe
+    }, [])
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -49,7 +65,9 @@ const HomeScreen = ({ navigation }) => {
     return (
         <SafeAreaView>
             <ScrollView>
-                <CustomListItem />
+                {chats.map(({id, data: { chatName } }) => ( 
+                    <CustomListItem key={id} id={id} chatName={chatName}/>   
+                ))}
             </ScrollView>
         </SafeAreaView>
     )

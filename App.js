@@ -10,7 +10,8 @@ import AddChatScreen from './screens/AddChatScreen';
 import ChatScreen from './screens/ChatScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 
-LogBox.ignoreLogs(['Setting a timer'])
+
+// LogBox.ignoreLogs(['Setting a timer'])
 
 const Stack = createStackNavigator();
 

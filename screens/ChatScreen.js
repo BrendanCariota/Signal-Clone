@@ -31,7 +31,9 @@ const ChatScreen = ({ navigation, route}) => {
                         alignItems: "center",
                     }}
                 >
-                    <Avatar rounded source={require("../images/avatar-placeholder.png")}/>
+                    <Avatar rounded source={{
+                        uri: messages[messages.length - 1]?.data.photoURL,
+                    }}/>
                     <Text
                         style={{
                             color: 'white',
@@ -69,7 +71,7 @@ const ChatScreen = ({ navigation, route}) => {
                 </View>
             )
         })
-    }, [navigation])
+    }, [navigation, messages])
 
     const sendMessage = () => {
         Keyboard.dismiss();
@@ -93,7 +95,7 @@ const ChatScreen = ({ navigation, route}) => {
             .collection('chats')
             .doc(route.params.id)
             .collection('messages')
-            .orderBy('timestamp', 'desc')
+            .orderBy('timestamp', 'asc')
             //On snapshot we want to map through all of the messages in our array and set the id and data
             .onSnapshot(snapshot => setMessages( 
                 snapshot.docs.map(doc => ({
@@ -130,7 +132,7 @@ const ChatScreen = ({ navigation, route}) => {
                                         position="absolute"
                                         // WEB
                                         containerStyle={{
-                                            position: "aboslute",
+                                            position: "absolute",
                                             bottom: -15,
                                             right: -5,
                                         }}
@@ -149,7 +151,7 @@ const ChatScreen = ({ navigation, route}) => {
                                         position="absolute"
                                         // WEB
                                         containerStyle={{
-                                            position: "aboslute",
+                                            position: "absolute",
                                             bottom: -15,
                                             left: -5,
                                         }}

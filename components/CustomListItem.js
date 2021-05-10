@@ -1,13 +1,32 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { ListItem, Avatar } from "react-native-elements"
+import { db } from '../firebase'
 
 const CustomListItem = ({ id, chatName, enterChat }) => {
+
+    const [chatMessages, setChatMessages] = useState([])
+
+    useEffect(() => {
+        const unsubscribe = db
+            .collection('chats')
+            .doc(id)
+            .collection('messages')
+            .orderBy('timestamp', 'asc')
+            .onSnapshot(snapshot => (
+                setChatMessages(snapshot.docs.map(doc => doc.data()))
+            ))
+
+            return unsubscribe
+    }, [])
+
     return (
         <ListItem onPress={() => enterChat(id, chatName)} key={id} bottomDivider>
             <Avatar 
                 rounded
-                source={require("../images/avatar-placeholder.png")}
+                source={{
+                    uri: chatMessages?.[chatMessages.length - 1]?.photoURL || 'https://www.mtsolar.us/wp-content/uploads/2020/04/avatar-placeholder.png'
+                }}
             />
             <ListItem.Content>
                 <ListItem.Title style={{ fontWeight: "800"}}>
@@ -17,7 +36,7 @@ const CustomListItem = ({ id, chatName, enterChat }) => {
                     numberOfLines={1}
                     ellipsizeMode="tail"
                 >
-                    ABC
+                    {chatMessages?.[chatMessages.length - 1]?.displayName}: {chatMessages?.[chatMessages.length - 1]?.message}
                 </ListItem.Subtitle>
             </ListItem.Content>
         </ListItem>
